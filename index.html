@@ -16,7 +16,7 @@
         margin: 0;
         padding: 0;
         min-height: 100vh;
-        background: url("https://cdn.shopify.com/s/files/1/0569/9521/7541/files/JSB_STONEX_35.png?v=1725544451")
+        background: url("https://cdn.shopify.com/s/files/1/0569/9521/7541/files/JSB_STONEX_37.png?v=1725600969")
           no-repeat center center fixed;
         background-size: cover;
         text-align: center;
@@ -54,6 +54,8 @@
       }
 
       .countdown-item {
+        opacity: 0;
+        transform: scale(0.5);
         padding: 10px;
         border-radius: 10px;
         border: 2px solid #bb984d;
@@ -64,6 +66,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        transition: opacity 0.5s ease, transform 0.5s ease;
       }
 
       .countdown-item span {
@@ -78,6 +81,11 @@
       }
 
       @media (max-width: 480px) {
+        body {
+          background-size: contain;
+          background-position: center;
+        }
+
         h2 {
           font-size: 1.8rem;
         }
@@ -101,22 +109,22 @@
       <h2>Coming Soon..</h2>
       <div id="countdown">
         <div class="countdown-row">
-          <div class="countdown-item">
-            <span id="days">00</span>
+          <div class="countdown-item" id="day-item">
+            <span id="days">01</span>
             <div class="label">Days</div>
           </div>
-          <div class="countdown-item">
-            <span id="hours">00</span>
+          <div class="countdown-item" id="hour-item">
+            <span id="hours">02</span>
             <div class="label">Hours</div>
           </div>
         </div>
         <div class="countdown-row">
-          <div class="countdown-item">
-            <span id="minutes">00</span>
+          <div class="countdown-item" id="minute-item">
+            <span id="minutes">30</span>
             <div class="label">Minutes</div>
           </div>
-          <div class="countdown-item">
-            <span id="seconds">00</span>
+          <div class="countdown-item" id="second-item">
+            <span id="seconds">60</span>
             <div class="label">Seconds</div>
           </div>
         </div>
@@ -124,34 +132,39 @@
     </div>
 
     <script>
-      // Set the date we're counting down to (7th September)
-      let countDownDate = new Date("Sep 7, 2024 00:00:00").getTime();
+      // Function to reveal items one by one with animation
+      function revealItem(elementId, delay) {
+        setTimeout(() => {
+          const element = document.getElementById(elementId);
+          element.style.opacity = "1";
+          element.style.transform = "scale(1)";
+        }, delay);
+      }
 
-      // Update the countdown every second
+      // Reveal day, hour, minute, and second items sequentially
+      revealItem("day-item", 500); // 0.5 second delay
+      revealItem("hour-item", 1500); // 1.5 second delay
+      revealItem("minute-item", 2500); // 2.5 second delay
+      revealItem("second-item", 3500); // 3.5 second delay
+
+      // Initialize the starting values
+      let seconds = 60;
+
+      // Countdown functionality
       let countdownFunction = setInterval(function () {
-        let now = new Date().getTime();
-        let remainingTime = countDownDate - now;
-
-        // Calculate days, hours, minutes, and seconds
-        let days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-        let hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-
-        // Display the result in the respective elements
-        document.getElementById("days").innerHTML = days.toString().padStart(2, "0");
-        document.getElementById("hours").innerHTML = hours.toString().padStart(2, "0");
-        document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, "0");
-        document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, "0");
-
-        // If the countdown is finished, display '0' in all fields
-        if (remainingTime < 0) {
-          clearInterval(countdownFunction);
-          document.getElementById("days").innerHTML = "00";
-          document.getElementById("hours").innerHTML = "00";
-          document.getElementById("minutes").innerHTML = "00";
-          document.getElementById("seconds").innerHTML = "00";
+        // Decrease seconds and reset if it reaches 0
+        seconds -= 1;
+        if (seconds < 0) {
+          seconds = 60;
         }
+
+        // Display the constant day, hour, and minute values
+        document.getElementById("days").innerHTML = "01";
+        document.getElementById("hours").innerHTML = "02";
+        document.getElementById("minutes").innerHTML = "30";
+
+        // Update only the seconds
+        document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, "0");
       }, 1000); // Update every second
     </script>
   </body>
